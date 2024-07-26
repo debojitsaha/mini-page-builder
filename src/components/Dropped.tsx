@@ -76,7 +76,6 @@ export default function Dropped({
       onClick={handleClick}
       onKeyDown={(event) => {
         if (event.key === "Delete" || event.key === "Backspace") {
-          setDeleteComponent(component.id);
           handleDelete();
         }
       }}

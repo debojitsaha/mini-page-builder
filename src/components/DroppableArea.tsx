@@ -6,6 +6,7 @@ interface DroppableAreaProps {
   onDrop: (component: any, x: number, y: number) => void;
   onUpdatePosition: (id: number, x: number, y: number) => void;
   setDeleteComponent: (id: number) => void;
+  handleDelete: () => void;
 }
 
 export default function DroppableArea({
@@ -13,6 +14,7 @@ export default function DroppableArea({
   onDrop,
   onUpdatePosition,
   setDeleteComponent,
+  handleDelete,
 }: DroppableAreaProps) {
   const [dragOver, setDragOver] = useState(false);
 
@@ -51,7 +53,7 @@ export default function DroppableArea({
           component={component}
           onUpdatePosition={onUpdatePosition}
           setDeleteComponent={setDeleteComponent}
-          handleDelete={() => void 0}
+          handleDelete={handleDelete}
         />
       ))}
     </div>

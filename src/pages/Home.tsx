@@ -84,6 +84,7 @@ export default function Home() {
           onDrop={handleDrop}
           onUpdatePosition={handleUpdatePosition}
           setDeleteComponent={setDeleteComponent}
+          handleDelete={handleDelete}
         />
       </div>
       {showModal && (
