@@ -7,8 +7,11 @@ import { ComponentProps } from "@/interface";
 import { nanoid } from "nanoid";
 
 import Button from "@/ui/button/button";
+import ToastContainer from "@/ui/toast/ToastContainer";
+import useToast from "@/hooks/useToast";
 
 export default function Home() {
+  const { toasts, addToast } = useToast();
   const [components, setComponents] = useState<ComponentProps[]>(
     JSON.parse(localStorage.getItem("components") || "[]")
   );
@@ -48,18 +51,26 @@ export default function Home() {
   };
 
   const handleDelete = () => {
+    if (components.length === 0) {
+      addToast("No components to clear", "error");
+      return;
+    }
     if (deleteComponent) {
       setComponents(
         components.filter((component) => component.id !== deleteComponent)
       );
       setDeleteComponent(null);
+    }else{
+      addToast("Select component to delete", "info");
     }
   };
 
   const handleExportJSON = () => {
     if (components.length === 0) {
+      addToast("No components to export", "info");
       return;
     }
+    addToast("Preparing JSON..", "success");
     const json = JSON.stringify(components);
     const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -71,13 +82,24 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100">
+      <ToastContainer toasts={toasts} />
       <div className="flex flex-col sm:flex-row items-center justify-between p-4">
         <h1 className="text-2xl font-bold mb-4">
           Mini Page
           <span className="text-blue-700"> Builder</span>
         </h1>
         <div className="flex items-center gap-2 w-full sm:w-fit">
-          <Button variant="ghost" onClick={() => setComponents([])}>
+          <Button
+            variant="ghost"
+            onClick={() => {
+              if (components.length === 0) {
+                addToast("No components to clear", "error");
+                return;
+              }
+              setComponents([]);
+              localStorage.setItem("components", "[]");
+            }}
+          >
             Clear
           </Button>
           <Button onClick={handleExportJSON}>Export JSON</Button>
