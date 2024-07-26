@@ -140,7 +140,7 @@ export default function Home() {
       {showModal && (
         <Modal
           onSave={handleModalSave}
-          initialProps={{ text: "", fontWeight: "normal", fontSize: "16px" }}
+          initialProps={{ text: "Sample", fontWeight: "400", fontSize: "16" }}
         />
       )}
     </div>
