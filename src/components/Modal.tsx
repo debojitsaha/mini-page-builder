@@ -1,8 +1,14 @@
+import Button from "@/ui/button/button";
 import { useEffect, useState } from "react";
 
 interface ModalProps {
   onSave: (props: any) => void;
-  initialProps: { text: string; fontWeight: string; fontSize: string; labelType: string };
+  initialProps: {
+    text: string;
+    fontWeight: string;
+    fontSize: string;
+    labelType: string;
+  };
   setShowModal: (value: boolean) => void;
 }
 
@@ -32,14 +38,14 @@ export default function Modal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded shadow">
+      <div className="w-96 bg-white rounded shadow">
         <div className="flex items-center justify-between gap-2 p-4 border-b-2">
           <h1 className="text-xl font-semibold">Edit Label</h1>
           <div className="cursor-pointer" onClick={() => setShowModal(false)}>
             X
           </div>
         </div>
-        <div className="p-4">
+        <div className="p-4 flex flex-col gap-4">
           <div className="">
             <label className="block mb-1 text-sm">Text</label>
             <input
@@ -54,7 +60,7 @@ export default function Modal({
               className="border p-2 w-full rounded-md"
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="">
             <label className="block mb-1 text-sm">Font Weight</label>
             <input
               type="number"
@@ -96,13 +102,8 @@ export default function Modal({
               <option value="button">Button</option>
             </select>
           </div>
-          <div className="flex justify-end mt-2">
-            <button
-              onClick={(event) => handleSave(event)}
-              className="w-full bg-blue-500 text-white p-2 rounded-md"
-            >
-              Save Changes
-            </button>
+          <div className="w-full mt-2">
+            <Button onClick={(event) => handleSave(event)}>Save Changes</Button>
           </div>
         </div>
       </div>

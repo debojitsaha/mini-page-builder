@@ -27,7 +27,7 @@ export default function Home() {
 
   const handleDrop = (component: any, x: number, y: number) => {
     setShowModal(true);
-    setModalProps({ component, x, y, id: nanoid(), });
+    setModalProps({ component, x, y, id: nanoid() });
   };
 
   const handleModalSave = (props: ModalProps) => {
@@ -65,7 +65,7 @@ export default function Home() {
       );
       setDeleteComponent(null);
     } else {
-      addToast("Select component to delete", "info");
+      addToast("Component Selected, press Delete", "info");
     }
   };
 
@@ -143,7 +143,12 @@ export default function Home() {
       {showModal && (
         <Modal
           onSave={handleModalSave}
-          initialProps={{ text: "Sample", fontWeight: "400", fontSize: "16", labelType: labelType }}
+          initialProps={{
+            text: "Sample",
+            fontWeight: "400",
+            fontSize: "16",
+            labelType: labelType,
+          }}
           setShowModal={setShowModal}
         />
       )}

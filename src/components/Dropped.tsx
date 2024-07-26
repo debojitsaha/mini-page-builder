@@ -98,6 +98,7 @@ export default function Dropped({
         isSelected ? "border-red-500" : "border-transparent"
       } cursor-pointer`}
       style={{ left: position.x, top: position.y }}
+      tabIndex={0}
       onDragStart={handleDragStart}
       onDrag={handleDrag}
       onDragEnd={handleDragEnd}
@@ -109,8 +110,6 @@ export default function Dropped({
           handleDelete();
         } else if (event.key === "Enter") {
           setShowModal(true);
-          setIsSelected(false);
-          setDeleteComponent(null as any);
         }
       }}
       draggable
@@ -148,7 +147,13 @@ export default function Dropped({
           {labelProps.text}
         </button>
       )}
-      {showModal && <Modal onSave={handleSave} initialProps={labelProps} setShowModal={setShowModal} />}
+      {showModal && (
+        <Modal
+          onSave={handleSave}
+          initialProps={labelProps}
+          setShowModal={setShowModal}
+        />
+      )}
     </div>
   );
 }
