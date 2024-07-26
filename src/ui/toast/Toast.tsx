@@ -1,4 +1,3 @@
-import React from "react";
 import { cn } from "@/utils";
 
 interface ToastProps {
@@ -6,7 +5,7 @@ interface ToastProps {
   type: "success" | "error" | "info";
 }
 
-const Toast: React.FC<ToastProps> = ({ message, type }) => {
+export default function Toast({ message, type }: ToastProps) {
   return (
     <div
       className={cn(
@@ -22,6 +21,4 @@ const Toast: React.FC<ToastProps> = ({ message, type }) => {
       {message}
     </div>
   );
-};
-
-export default Toast;
+}

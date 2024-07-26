@@ -8,7 +8,7 @@ export interface ToastMessage {
   type: ToastType;
 }
 
-const useToast = () => {
+export default function useToast() {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   const addToast = useCallback((message: string, type: ToastType) => {
@@ -31,6 +31,4 @@ const useToast = () => {
   }, [toasts, removeToast]);
 
   return { toasts, addToast, removeToast };
-};
-
-export default useToast;
+}
