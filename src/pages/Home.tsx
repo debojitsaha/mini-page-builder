@@ -5,9 +5,8 @@ import DroppableArea from "@/components/DroppableArea";
 import Modal from "@/components/Modal";
 import { ComponentProps } from "@/interface";
 import { nanoid } from "nanoid";
-import { cn } from "@/utils";
 
-import { Trash } from "lucide-react";
+import Button from "@/ui/button/button";
 
 export default function Home() {
   const [components, setComponents] = useState<ComponentProps[]>(
@@ -57,24 +56,32 @@ export default function Home() {
     }
   };
 
+  const handleExportJSON = () => {
+    if (components.length === 0) {
+      return;
+    }
+    const json = JSON.stringify(components);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mini-page.json";
+    a.click();
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="flex items-center justify-between p-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between p-4">
         <h1 className="text-2xl font-bold mb-4">
           Mini Page
           <span className="text-blue-700"> Builder</span>
         </h1>
-        <button
-          className={cn(
-            deleteComponent === null ? "bg-red-300" : "bg-red-500",
-            "px-6 py-3 sm:px-8 sm:py-4 bg-red-500 text-white rounded-md flex items-center gap-2 font-semibold"
-          )}
-          onClick={handleDelete}
-          disabled={deleteComponent === null}
-        >
-          <Trash />
-          Delete
-        </button>
+        <div className="flex items-center gap-2 w-full sm:w-fit">
+          <Button variant="ghost" onClick={() => setComponents([])}>
+            Clear
+          </Button>
+          <Button onClick={handleExportJSON}>Export JSON</Button>
+        </div>
       </div>
       <div className="flex flex-col md:flex-row-reverse">
         <div className="bg-gray-900 px-3 py-6 flex flex-col gap-4 mx-auto min-w-[300px]">
