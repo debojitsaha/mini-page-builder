@@ -1,9 +1,16 @@
 export interface ComponentProps {
-    id: number;
+    id: number | string;
     type: string;
     text?: string;
-    fontWeight?: string;
-    fontSize?: string;
+    fontWeight?: number;
+    fontSize?: number;
     x: number;
     y: number;
+}
+
+export interface ModalProps {
+    text: string;
+    fontWeight: number;
+    fontSize: number;
+    labelType: string;
 }

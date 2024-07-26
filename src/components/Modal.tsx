@@ -2,13 +2,19 @@ import { useEffect, useState } from "react";
 
 interface ModalProps {
   onSave: (props: any) => void;
-  initialProps: { text: string; fontWeight: string; fontSize: string };
+  initialProps: { text: string; fontWeight: string; fontSize: string; labelType: string };
+  setShowModal: (value: boolean) => void;
 }
 
-export default function Modal({ onSave, initialProps }: ModalProps) {
+export default function Modal({
+  onSave,
+  initialProps,
+  setShowModal,
+}: ModalProps) {
   const [text, setText] = useState(initialProps.text);
   const [fontWeight, setFontWeight] = useState(initialProps.fontWeight);
   const [fontSize, setFontSize] = useState(initialProps.fontSize);
+  const [labelType, setLabelType] = useState<string>(initialProps.labelType);
 
   useEffect(() => {
     setText(initialProps.text);
@@ -21,61 +27,83 @@ export default function Modal({ onSave, initialProps }: ModalProps) {
   ) => {
     event.preventDefault();
     event.stopPropagation();
-    onSave({ text, fontWeight, fontSize });
+    onSave({ text, fontWeight, fontSize, labelType });
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-4 rounded shadow">
-        <div className="mb-2">
-          <label className="block mb-1">Text</label>
-          <input
-            type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Backspace" || event.key === "Delete") {
-                event.stopPropagation();
-              }
-            }}
-            className="border p-2 w-full"
-          />
+      <div className="bg-white rounded shadow">
+        <div className="flex items-center justify-between gap-2 p-4 border-b-2">
+          <h1 className="text-xl font-semibold">Edit Label</h1>
+          <div className="cursor-pointer" onClick={() => setShowModal(false)}>
+            X
+          </div>
         </div>
-        <div className="mb-2">
-          <label className="block mb-1">Font Weight</label>
-          <input
-            type="number"
-            value={fontWeight}
-            onChange={(e) => setFontWeight(e.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Backspace" || event.key === "Delete") {
-                event.stopPropagation();
-              }
-            }}
-            className="border p-2 w-full"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-1">Font Size</label>
-          <input
-            type="number"
-            value={fontSize}
-            onChange={(e) => setFontSize(e.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Backspace" || event.key === "Delete") {
-                event.stopPropagation();
-              }
-            }}
-            className="border p-2 w-full"
-          />
-        </div>
-        <div className="flex justify-end">
-          <button
-            onClick={(event) => handleSave(event)}
-            className="w-full bg-blue-500 text-white p-2 rounded-md"
-          >
-            Save Changes
-          </button>
+        <div className="p-4">
+          <div className="">
+            <label className="block mb-1 text-sm">Text</label>
+            <input
+              type="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Backspace" || event.key === "Delete") {
+                  event.stopPropagation();
+                }
+              }}
+              className="border p-2 w-full rounded-md"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="block mb-1 text-sm">Font Weight</label>
+            <input
+              type="number"
+              value={fontWeight}
+              onChange={(e) => setFontWeight(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Backspace" || event.key === "Delete") {
+                  event.stopPropagation();
+                }
+              }}
+              className="border p-2 w-full rounded-md"
+            />
+          </div>
+          <div className="">
+            <label className="block mb-1 text-sm">Font Size</label>
+            <input
+              type="number"
+              value={fontSize}
+              onChange={(e) => setFontSize(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Backspace" || event.key === "Delete") {
+                  event.stopPropagation();
+                }
+              }}
+              className="border p-2 w-full rounded-md"
+            />
+          </div>
+          <div className="">
+            <label className="block mb-1 text-sm">Label Type</label>
+            <select
+              name="labelType"
+              id="type"
+              value={labelType}
+              className="border border-gray-300 rounded-md px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) => setLabelType(e.target.value || "label")}
+            >
+              <option value="label">Label</option>
+              <option value="input">Input</option>
+              <option value="button">Button</option>
+            </select>
+          </div>
+          <div className="flex justify-end mt-2">
+            <button
+              onClick={(event) => handleSave(event)}
+              className="w-full bg-blue-500 text-white p-2 rounded-md"
+            >
+              Save Changes
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -18,7 +18,8 @@ export default function Dropped({
   const [labelProps, setLabelProps] = useState({
     text: component.text,
     fontWeight: component.fontWeight || 400,
-    fontSize: component.fontSize || "16px",
+    fontSize: component.fontSize || 16,
+    labelType: component.type || "label",
   });
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: component.x, y: component.y });
@@ -91,6 +92,7 @@ export default function Dropped({
 
   return (
     <div
+      id={component.type}
       ref={componentRef}
       className={`absolute p-2 border-2 ${
         isSelected ? "border-red-500" : "border-transparent"
@@ -126,14 +128,14 @@ export default function Dropped({
         />
       )}
       {component.type === "label" && (
-        <label
+        <div
           style={{
             fontWeight: labelProps.fontWeight,
             fontSize: `${labelProps.fontSize}px`,
           }}
         >
           {labelProps.text}
-        </label>
+        </div>
       )}
       {component.type === "button" && (
         <button
@@ -146,7 +148,7 @@ export default function Dropped({
           {labelProps.text}
         </button>
       )}
-      {showModal && <Modal onSave={handleSave} initialProps={labelProps} />}
+      {showModal && <Modal onSave={handleSave} initialProps={labelProps} setShowModal={setShowModal} />}
     </div>
   );
 }

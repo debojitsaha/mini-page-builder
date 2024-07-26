@@ -1,21 +1,22 @@
+import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
 
 import Draggable from "@/components/Draggable";
 import DroppableArea from "@/components/DroppableArea";
+import Dropped from "@/components/Dropped";
 import Modal from "@/components/Modal";
-import { ComponentProps } from "@/interface";
-import { nanoid } from "nanoid";
+import useToast from "@/hooks/useToast";
+import { ComponentProps, ModalProps } from "@/interface";
 
 import Button from "@/ui/button/button";
 import ToastContainer from "@/ui/toast/ToastContainer";
-import useToast from "@/hooks/useToast";
-import Dropped from "@/components/Dropped";
 
 export default function Home() {
   const { toasts, addToast } = useToast();
   const [components, setComponents] = useState<ComponentProps[]>(
     JSON.parse(localStorage.getItem("components") || "[]")
   );
+  const [labelType, setLabelType] = useState("label");
   const [showModal, setShowModal] = useState(false);
   const [modalProps, setModalProps] = useState<any>(null);
   const [deleteComponent, setDeleteComponent] = useState<number | null>(null);
@@ -26,18 +27,20 @@ export default function Home() {
 
   const handleDrop = (component: any, x: number, y: number) => {
     setShowModal(true);
-    setModalProps({ component, x, y, id: nanoid() });
+    setModalProps({ component, x, y, id: nanoid(), });
   };
 
-  const handleModalSave = (props: any) => {
+  const handleModalSave = (props: ModalProps) => {
     setComponents([
       ...components,
       {
-        ...modalProps.component,
-        ...props,
+        text: props.text,
+        type: props.labelType,
+        fontWeight: props.fontWeight,
+        fontSize: props.fontSize,
         x: modalProps.x,
         y: modalProps.y,
-        id: Date.now(),
+        id: nanoid(),
       },
     ]);
     setShowModal(false);
@@ -114,9 +117,9 @@ export default function Home() {
               Drag the elements to the canvas
             </p>
           </div>
-          <Draggable type="label" label="Label" />
-          <Draggable type="input" label="Input" />
-          <Draggable type="button" label="Button" />
+          <Draggable type="label" label="Label" setLabelType={setLabelType} />
+          <Draggable type="input" label="Input" setLabelType={setLabelType} />
+          <Draggable type="button" label="Button" setLabelType={setLabelType} />
         </div>
         <DroppableArea
           components={components}
@@ -140,7 +143,8 @@ export default function Home() {
       {showModal && (
         <Modal
           onSave={handleModalSave}
-          initialProps={{ text: "Sample", fontWeight: "400", fontSize: "16" }}
+          initialProps={{ text: "Sample", fontWeight: "400", fontSize: "16", labelType: labelType }}
+          setShowModal={setShowModal}
         />
       )}
     </div>
