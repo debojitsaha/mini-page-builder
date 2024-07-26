@@ -24,7 +24,7 @@ export default function useToast() {
     if (toasts.length > 0) {
       const timer = setTimeout(() => {
         removeToast(toasts[0].id);
-      }, 3000); // Auto close after 3 seconds
+      }, 1000); // Auto close after 1 seconds
 
       return () => clearTimeout(timer);
     }
