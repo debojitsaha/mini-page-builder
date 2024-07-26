@@ -9,6 +9,7 @@ import { nanoid } from "nanoid";
 import Button from "@/ui/button/button";
 import ToastContainer from "@/ui/toast/ToastContainer";
 import useToast from "@/hooks/useToast";
+import Dropped from "@/components/Dropped";
 
 export default function Home() {
   const { toasts, addToast } = useToast();
@@ -60,7 +61,7 @@ export default function Home() {
         components.filter((component) => component.id !== deleteComponent)
       );
       setDeleteComponent(null);
-    }else{
+    } else {
       addToast("Select component to delete", "info");
     }
   };
@@ -124,6 +125,17 @@ export default function Home() {
           setDeleteComponent={setDeleteComponent}
           handleDelete={handleDelete}
         />
+      </div>
+      <div className="relative border border-dashed border-gray-300 min-h-[400px]">
+        {components.map((component) => (
+          <Dropped
+            key={component.id}
+            component={component}
+            onUpdatePosition={handleUpdatePosition}
+            setDeleteComponent={setDeleteComponent}
+            handleDelete={handleDelete}
+          />
+        ))}
       </div>
       {showModal && (
         <Modal

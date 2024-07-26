@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Modal from "./Modal";
 
 interface DroppedProps {
   component: any;
@@ -13,7 +14,8 @@ export default function Dropped({
   setDeleteComponent,
   handleDelete,
 }: DroppedProps) {
-  const [labelProps] = useState({
+  const [showModal, setShowModal] = useState(false);
+  const [labelProps, setLabelProps] = useState({
     text: component.text,
     fontWeight: component.fontWeight || 400,
     fontSize: component.fontSize || "16px",
@@ -22,6 +24,15 @@ export default function Dropped({
   const [position, setPosition] = useState({ x: component.x, y: component.y });
   const [isSelected, setIsSelected] = useState(false);
   const componentRef = useRef<HTMLDivElement>(null);
+
+  const handleDoubleClick = () => {
+    setShowModal(true);
+  };
+
+  const handleSave = (props: any) => {
+    setLabelProps(props);
+    setShowModal(false);
+  };
 
   const handleDragStart = () => {
     setIsDragging(true);
@@ -44,8 +55,23 @@ export default function Dropped({
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     setIsSelected(true);
-    setDeleteComponent(component.id);
   };
+
+  const handleDeselect = () => {
+    setIsSelected(false);
+  };
+
+  useEffect(() => {
+    if (isSelected) {
+      document.addEventListener("click", handleDeselect);
+    } else {
+      document.removeEventListener("click", handleDeselect);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleDeselect);
+    };
+  }, [isSelected]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -74,9 +100,15 @@ export default function Dropped({
       onDrag={handleDrag}
       onDragEnd={handleDragEnd}
       onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
       onKeyDown={(event) => {
         if (event.key === "Delete" || event.key === "Backspace") {
+          setDeleteComponent(component.id);
           handleDelete();
+        } else if (event.key === "Enter") {
+          setShowModal(true);
+          setIsSelected(false);
+          setDeleteComponent(null as any);
         }
       }}
       draggable
@@ -114,6 +146,7 @@ export default function Dropped({
           {labelProps.text}
         </button>
       )}
+      {showModal && <Modal onSave={handleSave} initialProps={labelProps} />}
     </div>
   );
 }
