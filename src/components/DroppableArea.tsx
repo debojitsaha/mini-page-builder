@@ -51,6 +51,7 @@ export default function DroppableArea({
           component={component}
           onUpdatePosition={onUpdatePosition}
           setDeleteComponent={setDeleteComponent}
+          handleDelete={() => void 0}
         />
       ))}
     </div>

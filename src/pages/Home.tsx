@@ -45,8 +45,6 @@ export default function Home() {
   };
 
   const handleDelete = () => {
-    console.log("hello");
-
     if (deleteComponent) {
       setComponents(
         components.filter((component) => component.id !== deleteComponent)
@@ -58,7 +56,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex items-center justify-between p-4">
-        <h1 className="text-2xl font-bold mb-4">Mini Page Builder</h1>
+        <h1 className="text-2xl font-bold mb-4">
+          Mini Page
+          <span className="text-blue-700"> Builder</span>
+        </h1>
         <button
           className={cn(
             deleteComponent === null ? "bg-red-300" : "bg-red-500",

@@ -4,12 +4,14 @@ interface DroppedProps {
   component: any;
   onUpdatePosition: (id: number, x: number, y: number) => void;
   setDeleteComponent: (id: number) => void;
+  handleDelete: () => void;
 }
 
 export default function Dropped({
   component,
   onUpdatePosition,
   setDeleteComponent,
+  handleDelete,
 }: DroppedProps) {
   const [labelProps] = useState({
     text: component.text,
@@ -41,8 +43,6 @@ export default function Dropped({
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    console.log("clicked");
-
     setIsSelected(true);
     setDeleteComponent(component.id);
   };
@@ -74,6 +74,12 @@ export default function Dropped({
       onDrag={handleDrag}
       onDragEnd={handleDragEnd}
       onClick={handleClick}
+      onKeyDown={(event) => {
+        if (event.key === "Delete" || event.key === "Backspace") {
+          setDeleteComponent(component.id);
+          handleDelete();
+        }
+      }}
       draggable
     >
       {component.type === "input" && (
