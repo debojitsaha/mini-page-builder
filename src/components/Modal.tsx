@@ -28,14 +28,7 @@ export default function Modal({ onSave, initialProps }: ModalProps) {
         </div>
         <div className="mb-2">
           <label className="block mb-1">Font Weight</label>
-          <select
-            value={fontWeight}
-            onChange={(e) => setFontWeight(e.target.value)}
-            className="border p-2 w-full"
-          >
-            <option value="normal">Normal</option>
-            <option value="bold">Bold</option>
-          </select>
+          <input type="number" value={fontWeight} onChange={(e) => setFontWeight(e.target.value)} className="border p-2 w-full" />
         </div>
         <div className="mb-2">
           <label className="block mb-1">Font Size</label>

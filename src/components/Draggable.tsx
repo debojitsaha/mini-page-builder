@@ -1,5 +1,4 @@
 import React from "react";
-import { GripVertical } from "lucide-react";
 
 interface DraggableProps {
   type: string;
@@ -17,7 +16,6 @@ export default function Draggable({ type, label }: DraggableProps) {
       draggable
       onDragStart={handleDragStart}
     >
-      <GripVertical className="text-gray-400" />
       {label}
     </div>
   );

@@ -1,25 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Draggable from "@/components/Draggable";
 import DroppableArea from "@/components/DroppableArea";
 import Modal from "@/components/Modal";
-
-import { Trash } from "lucide-react";
+import { ComponentProps } from "@/interface";
+import { nanoid } from "nanoid";
 import { cn } from "@/utils";
 
+import { Trash } from "lucide-react";
+
 export default function Home() {
-  const [components, setComponents] = useState<any[]>([]);
+  const [components, setComponents] = useState<ComponentProps[]>(
+    JSON.parse(localStorage.getItem("components") || "[]")
+  );
   const [showModal, setShowModal] = useState(false);
   const [modalProps, setModalProps] = useState<any>(null);
   const [deleteComponent, setDeleteComponent] = useState<number | null>(null);
 
+  useEffect(() => {
+    localStorage.setItem("components", JSON.stringify(components));
+  }, [components]);
+
   const handleDrop = (component: any, x: number, y: number) => {
-    if (component.type === "label") {
-      setShowModal(true);
-      setModalProps({ component, x, y });
-    } else {
-      setComponents([...components, { ...component, x, y, id: Date.now() }]);
-    }
+    setShowModal(true);
+    setModalProps({ component, x, y, id: nanoid() });
   };
 
   const handleModalSave = (props: any) => {
@@ -74,7 +78,12 @@ export default function Home() {
       </div>
       <div className="flex flex-col md:flex-row-reverse">
         <div className="bg-gray-900 px-3 py-6 flex flex-col gap-4 mx-auto min-w-[300px]">
-          <h1 className="text-3xl text-white">Blocks</h1>
+          <div className="mb-4">
+            <h1 className="text-3xl text-white">Blocks</h1>
+            <p className="text-md text-gray-300">
+              Drag the elements to the canvas
+            </p>
+          </div>
           <Draggable type="label" label="Label" />
           <Draggable type="input" label="Input" />
           <Draggable type="button" label="Button" />

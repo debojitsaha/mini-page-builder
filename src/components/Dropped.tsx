@@ -15,7 +15,7 @@ export default function Dropped({
 }: DroppedProps) {
   const [labelProps] = useState({
     text: component.text,
-    fontWeight: component.fontWeight || "normal",
+    fontWeight: component.fontWeight || 400,
     fontSize: component.fontSize || "16px",
   });
   const [isDragging, setIsDragging] = useState(false);
@@ -82,12 +82,21 @@ export default function Dropped({
       draggable
     >
       {component.type === "input" && (
-        <input type="text" className="border p-2" />
+        <input
+          type="text"
+          className="border px-4 py-2 rounded-md"
+          style={{
+            fontWeight: labelProps.fontWeight,
+            fontSize: `${labelProps.fontSize}px`,
+          }}
+          value={labelProps.text}
+          readOnly
+        />
       )}
       {component.type === "label" && (
         <label
           style={{
-            fontWeight: labelProps.fontWeight === "bold" ? 600 : 400,
+            fontWeight: labelProps.fontWeight,
             fontSize: `${labelProps.fontSize}px`,
           }}
         >
@@ -95,7 +104,15 @@ export default function Dropped({
         </label>
       )}
       {component.type === "button" && (
-        <button className="bg-blue-500 text-white p-2">Button</button>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded-md"
+          style={{
+            fontWeight: labelProps.fontWeight,
+            fontSize: `${labelProps.fontSize}px`,
+          }}
+        >
+          {labelProps.text}
+        </button>
       )}
     </div>
   );
