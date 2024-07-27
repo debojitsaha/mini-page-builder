@@ -56,7 +56,6 @@ To run this project locally, follow these steps:
 - **React.js**: For building the user interface.
 - **Tailwind CSS**: For styling the application.
 - **TypeScript**: For type-safe JavaScript code.
-- **Local Storage**: For persisting the state of the application.
 - **nanoid**: For generating unique IDs for components.
 
 ---
