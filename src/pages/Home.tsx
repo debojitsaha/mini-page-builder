@@ -31,9 +31,6 @@ export default function Home() {
   };
 
   const handleModalSave = (props: ModalProps) => {
-    console.log(props);
-    console.log("hello");
-
     setComponents([
       ...components,
       {
