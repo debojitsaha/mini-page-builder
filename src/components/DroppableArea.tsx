@@ -6,7 +6,7 @@ interface DroppableAreaProps {
   components: ComponentProps[];
   onDrop: (component: any, x: number, y: number) => void;
   onUpdatePosition: (id: number, x: number, y: number) => void;
-  setDeleteComponent: (id: number) => void;
+  setDeleteComponent: (id: string) => void;
   handleDelete: () => void;
 }
 

@@ -1,5 +1,5 @@
 export interface ComponentProps {
-  id: number | string;
+  id: string;
   type: string;
   text: string;
   fontWeight: number;

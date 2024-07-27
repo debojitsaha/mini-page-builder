@@ -19,7 +19,7 @@ export default function Home() {
   const [labelType, setLabelType] = useState("label");
   const [showModal, setShowModal] = useState(false);
   const [modalProps, setModalProps] = useState<any>(null);
-  const [deleteComponent, setDeleteComponent] = useState<number | null>(null);
+  const [deleteComponent, setDeleteComponent] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem("components", JSON.stringify(components));

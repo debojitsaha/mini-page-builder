@@ -5,7 +5,7 @@ import { ComponentProps, ModalProps } from "@/interface";
 interface DroppedProps {
   component: ComponentProps;
   onUpdatePosition: (id: number, x: number, y: number) => void;
-  setDeleteComponent: (id: number) => void;
+  setDeleteComponent: (id: string) => void;
   handleDelete: () => void;
 }
 
@@ -107,7 +107,7 @@ export default function Dropped({
       onDoubleClick={handleDoubleClick}
       onKeyDown={(event) => {
         if (event.key === "Delete" || event.key === "Backspace") {
-          setDeleteComponent(Number(component.id));
+          setDeleteComponent((component.id));
           handleDelete();
         } else if (event.key === "Enter") {
           setShowModal(true);
