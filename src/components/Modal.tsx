@@ -1,5 +1,5 @@
 import Button from "@/ui/button/button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ModalProps {
   onSave: (props: any) => void;
@@ -10,23 +10,45 @@ interface ModalProps {
     labelType: string;
   };
   setShowModal: (value: boolean) => void;
+  coordinates?: { x: number; y: number };
 }
 
 export default function Modal({
   onSave,
   initialProps,
   setShowModal,
+  coordinates,
 }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
   const [text, setText] = useState(initialProps.text);
   const [fontWeight, setFontWeight] = useState(initialProps.fontWeight);
   const [fontSize, setFontSize] = useState(initialProps.fontSize);
   const [labelType, setLabelType] = useState<string>(initialProps.labelType);
+  const [position, setPosition] = useState({
+    x: coordinates?.x || 0,
+    y: coordinates?.y || 0,
+  });
 
   useEffect(() => {
     setText(initialProps.text);
     setFontWeight(initialProps.fontWeight);
     setFontSize(initialProps.fontSize);
   }, [initialProps]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        event.stopPropagation();  // Stop event from bubbling up
+        setShowModal(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSave = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -38,7 +60,7 @@ export default function Modal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="w-96 bg-white rounded shadow">
+      <div  ref={modalRef} className="w-96 bg-white rounded shadow">
         <div className="flex items-center justify-between gap-2 p-4 border-b-2">
           <h1 className="text-xl font-semibold">Edit Label</h1>
           <div className="cursor-pointer" onClick={() => setShowModal(false)}>
@@ -59,6 +81,44 @@ export default function Modal({
               }}
               className="border p-2 w-full rounded-md"
             />
+          </div>
+          <div className="w-full flex items-center justify-between gap-2">
+            <div className="w-1/2">
+              <label className="block mb-1 text-sm">X</label>
+              <input
+                type="number"
+                value={position.x}
+                onChange={(e) =>
+                  setPosition({ ...position, x: Number(e.target.value) })
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "Backspace" || event.key === "Delete") {
+                    event.stopPropagation();
+                  }
+                }}
+                className="border p-2 w-full rounded-md"
+                readOnly
+                disabled
+              />
+            </div>
+            <div className="w-1/2">
+              <label className="block mb-1 text-sm">Y</label>
+              <input
+                type="number"
+                value={position.y}
+                onChange={(e) =>
+                  setPosition({ ...position, y: Number(e.target.value) })
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "Backspace" || event.key === "Delete") {
+                    event.stopPropagation();
+                  }
+                }}
+                className="border p-2 w-full rounded-md"
+                readOnly
+                disabled
+              />
+            </div>
           </div>
           <div className="">
             <label className="block mb-1 text-sm">Font Weight</label>
@@ -94,8 +154,9 @@ export default function Modal({
               name="labelType"
               id="type"
               value={labelType}
-              className="border border-gray-300 rounded-md px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-md p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               onChange={(e) => setLabelType(e.target.value || "label")}
+              disabled
             >
               <option value="label">Label</option>
               <option value="input">Input</option>

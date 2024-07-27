@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Dropped from "./Dropped";
+import { ComponentProps } from "@/interface";
 
 interface DroppableAreaProps {
-  components: any[];
+  components: ComponentProps[];
   onDrop: (component: any, x: number, y: number) => void;
   onUpdatePosition: (id: number, x: number, y: number) => void;
   setDeleteComponent: (id: number) => void;

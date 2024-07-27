@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
+import { ComponentProps, ModalProps } from "@/interface";
 
 interface DroppedProps {
-  component: any;
+  component: ComponentProps;
   onUpdatePosition: (id: number, x: number, y: number) => void;
   setDeleteComponent: (id: number) => void;
   handleDelete: () => void;
@@ -30,7 +31,7 @@ export default function Dropped({
     setShowModal(true);
   };
 
-  const handleSave = (props: any) => {
+  const handleSave = (props: ModalProps) => {
     setLabelProps(props);
     setShowModal(false);
   };
@@ -50,7 +51,7 @@ export default function Dropped({
 
   const handleDragEnd = () => {
     setIsDragging(false);
-    onUpdatePosition(component.id, position.x, position.y);
+    onUpdatePosition(Number(component.id), position.x, position.y);
   };
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -106,7 +107,7 @@ export default function Dropped({
       onDoubleClick={handleDoubleClick}
       onKeyDown={(event) => {
         if (event.key === "Delete" || event.key === "Backspace") {
-          setDeleteComponent(component.id);
+          setDeleteComponent(Number(component.id));
           handleDelete();
         } else if (event.key === "Enter") {
           setShowModal(true);
@@ -150,8 +151,9 @@ export default function Dropped({
       {showModal && (
         <Modal
           onSave={handleSave}
-          initialProps={labelProps}
+          initialProps={labelProps as any}
           setShowModal={setShowModal}
+          coordinates={position}
         />
       )}
     </div>

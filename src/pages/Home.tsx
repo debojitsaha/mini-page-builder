@@ -31,6 +31,9 @@ export default function Home() {
   };
 
   const handleModalSave = (props: ModalProps) => {
+    console.log(props);
+    console.log("hello");
+
     setComponents([
       ...components,
       {
@@ -46,7 +49,7 @@ export default function Home() {
     setShowModal(false);
   };
 
-  const handleUpdatePosition = (id: number, x: number, y: number) => {
+  const handleUpdatePosition = (id: string | number, x: number, y: number) => {
     setComponents(
       components.map((component) =>
         component.id === id ? { ...component, x, y } : component
@@ -150,6 +153,7 @@ export default function Home() {
             labelType: labelType,
           }}
           setShowModal={setShowModal}
+          coordinates={modalProps}
         />
       )}
     </div>
