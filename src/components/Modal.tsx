@@ -1,4 +1,5 @@
 import Button from "@/ui/button/button";
+import { capitaliseFirstLetter } from "@/utils";
 import { useEffect, useRef, useState } from "react";
 
 interface ModalProps {
@@ -23,7 +24,7 @@ export default function Modal({
   const [text, setText] = useState(initialProps.text);
   const [fontWeight, setFontWeight] = useState(initialProps.fontWeight);
   const [fontSize, setFontSize] = useState(initialProps.fontSize);
-  const [labelType, setLabelType] = useState<string>(initialProps.labelType);
+  const [labelType] = useState<string>(initialProps.labelType);
   const [position, setPosition] = useState({
     x: coordinates?.x || 0,
     y: coordinates?.y || 0,
@@ -37,8 +38,11 @@ export default function Modal({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        event.stopPropagation();  // Stop event from bubbling up
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        event.stopPropagation(); // Stop event from bubbling up
         setShowModal(false);
       }
     };
@@ -60,9 +64,15 @@ export default function Modal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div  ref={modalRef} className="w-96 bg-white rounded shadow">
-        <div className="flex items-center justify-between gap-2 p-4 border-b-2">
-          <h1 className="text-xl font-semibold">Edit Label</h1>
+      <div ref={modalRef} className="w-96 bg-white rounded shadow">
+        <div className="flex items-start justify-between gap-2 p-4 border-b-2">
+          <h1 className="text-xl font-semibold">
+            Edit Config
+            <span className="text-sm text-blue-500">
+              {" "}
+              ({capitaliseFirstLetter(labelType)})
+            </span>
+          </h1>
           <div className="cursor-pointer" onClick={() => setShowModal(false)}>
             X
           </div>
@@ -147,21 +157,6 @@ export default function Modal({
               }}
               className="border p-2 w-full rounded-md"
             />
-          </div>
-          <div className="">
-            <label className="block mb-1 text-sm">Label Type</label>
-            <select
-              name="labelType"
-              id="type"
-              value={labelType}
-              className="w-full border border-gray-300 rounded-md p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              onChange={(e) => setLabelType(e.target.value || "label")}
-              disabled
-            >
-              <option value="label">Label</option>
-              <option value="input">Input</option>
-              <option value="button">Button</option>
-            </select>
           </div>
           <div className="w-full mt-2">
             <Button onClick={(event) => handleSave(event)}>Save Changes</Button>
